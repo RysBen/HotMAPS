@@ -64,7 +64,7 @@ def main(opts):
     db = MySQLdb.connect(host=opts['host'],
                          user=opts['mysql_user'],
                          passwd=opts['mysql_passwd'],
-                         db=opts['db'])
+                         db=opts['db'], local_infile=1)
     cursor = db.cursor()
 
     # update mutations table
