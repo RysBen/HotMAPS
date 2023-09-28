@@ -131,11 +131,11 @@ prepMutationsNoLoad: mapMafToStructure prepMupitAnnotationMaf prepareMutationsTa
 # important for running on known structures
 getPDBInfo:
 	mkdir -p data
-	mysql -u ${MYSQL_USER} -A -p -h ${MYSQL_HOST} ${MYSQL_DB} < ${PDB_SQL_SCRIPT} > ${pdb_info_init}
+	mysql -u ${MYSQL_USER} -A -p'${MYSQL_PASSWD}' -h ${MYSQL_HOST} ${MYSQL_DB} < ${PDB_SQL_SCRIPT} > ${pdb_info_init}
 
 # get mutations from mupit database
 getMutations:
-	mysql -u ${MYSQL_USER} -A -p -h ${MYSQL_HOST} ${MYSQL_DB} < scripts/sql/get_mutations.sql > ${MUT_FILE}
+	mysql -u ${MYSQL_USER} -A -p'${MYSQL_PASSWD}' -h ${MYSQL_HOST} ${MYSQL_DB} < scripts/sql/get_mutations.sql > ${MUT_FILE}
 
 # add file path information for pdb files
 getPDBPath:
@@ -167,7 +167,7 @@ runParallelHotspot:
 	mkdir -p ${OUTPUT_DIR}/data/hotspot/residues
 	mkdir -p ${OUTPUT_DIR}/error
 	# run hotspot code in parallel
-	qsub -N PDB2HOTSPOT -v PATH=$$PATH scripts/qsub/run_parallel_hotspot.sh ${SPLIT_DIR} ${NUM_SIM} ${RADIUS} ${OUTPUT_DIR}
+        sbatch scripts/qsub/run_parallel_hotspot_slurm.sh ${SPLIT_DIR} ${NUM_SIM} ${RADIUS} ${OUTPUT_DIR}
 
 # run hotspot without the parallel aspect
 runNormalHotspot:
